@@ -13,8 +13,17 @@
     tools:showIn="@layout/activity_main"
     tools:context="com.gg.flickertask.MainActivity">
 
-    <TextView
-        android:text="Hello World!"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/serachEditText"
+        android:hint="Enter search text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/photos_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/serachEditText"
+        android:scrollbars="vertical" />
+
 </RelativeLayout>
