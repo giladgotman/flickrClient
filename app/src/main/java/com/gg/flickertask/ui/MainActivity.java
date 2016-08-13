@@ -1,4 +1,4 @@
-package com.gg.flickertask;
+package com.gg.flickertask.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.gg.flickertask.R;
 import com.gg.flickertask.adapters.PhotoAdapter;
 import com.gg.flickertask.model.PhotoSearchResult;
 import com.gg.flickertask.network.NetworkHelper;
