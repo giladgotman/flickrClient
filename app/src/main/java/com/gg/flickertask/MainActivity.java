@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.gg.flickertask.adapters.PhotoAdapter;
 import com.gg.flickertask.model.PhotoSearchResult;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
+    EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mSearchEditText = (EditText) findViewById(R.id.serachEditText);
         setRecyclerView();
 
         mNetworkHelper = new NetworkHelper();
@@ -44,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sendGetPhotoSearchResult("food");
+                    String searchText = mSearchEditText.getText().toString();
+                    if (searchText != null && !searchText.equals("")) {
+                        sendGetPhotoSearchResult(searchText);
+                    } else {
+                        mSearchEditText.setError("Please enter text");
+                    }
                 }
             });
         }
