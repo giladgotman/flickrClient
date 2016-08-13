@@ -7,7 +7,7 @@ public class Photo {
     public String id;
     public String owner;
     public String title;
-    public String urlS;
+    public String url_s;
     /**
      * No args constructor for use in serialization
      *
@@ -19,14 +19,14 @@ public class Photo {
      *
      * @param id
      * @param title
-     * @param urlS
+     * @param url_s
      * @param owner
      */
-    public Photo(String id, String owner, String title, String urlS) {
+    public Photo(String id, String owner, String title, String url_s) {
         this.id = id;
         this.owner = owner;
         this.title = title;
-        this.urlS = urlS;
+        this.url_s = url_s;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Photo {
                 "id='" + id + '\'' +
                 ", owner='" + owner + '\'' +
                 ", title='" + title + '\'' +
-                ", urlS='" + urlS + '\'' +
+                ", urlS='" + url_s + '\'' +
                 '}';
     }
 }

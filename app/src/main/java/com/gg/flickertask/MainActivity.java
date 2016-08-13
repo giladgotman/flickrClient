@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPhotoAdapter = new PhotoAdapter(null);
+        mPhotoAdapter = new PhotoAdapter(MainActivity.this, null);
         mRecyclerView.setAdapter(mPhotoAdapter);
     }
 
