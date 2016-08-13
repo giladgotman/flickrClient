@@ -31,20 +31,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         }
     }
 
-    public void add(int position, Photo item) {
-        mPhotoList.add(position, item);
-        notifyItemInserted(position);
+    public PhotoAdapter(List<Photo> photoList) {
+        setPhotoList(photoList);
     }
 
-    public void remove(Photo item) {
-        int position = mPhotoList.indexOf(item);
-        mPhotoList.remove(position);
-        notifyItemRemoved(position);
+    public void setPhotoList(List<Photo> photoList) {
+        mPhotoList = photoList;
     }
 
-    public PhotoAdapter(List<Photo> myDataset) {
-        mPhotoList = myDataset;
-    }
 
     @Override
     public PhotoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -63,6 +57,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        if (mPhotoList == null) {
+            return 0;
+        }
         return mPhotoList.size();
     }
 

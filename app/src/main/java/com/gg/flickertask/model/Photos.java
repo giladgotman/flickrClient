@@ -3,13 +3,16 @@ package com.gg.flickertask.model;
 /**
  * Created by Gilad on 8/13/2016.
  */
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Photos {
 
     public String total;
-    public List<Photo> photo = new ArrayList<Photo>();
+    @SerializedName("photo")
+    public List<Photo> mPhotoList = new ArrayList<Photo>();
     /**
      * No args constructor for use in serialization
      *
@@ -20,18 +23,26 @@ public class Photos {
     /**
      *
      * @param total
-     * @param photo
+     * @param photoList
      */
-    public Photos(String total, List<Photo> photo) {
+    public Photos(String total, List<Photo> photoList) {
         this.total = total;
-        this.photo = photo;
+        this.mPhotoList = photoList;
     }
 
     @Override
     public String toString() {
         return "Photos{" +
                 "total='" + total + '\'' +
-                ", photo=" + photo +
+                ", mPhotoList=" + mPhotoList +
                 '}';
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public List<Photo> getPhotoList() {
+        return mPhotoList;
     }
 }
