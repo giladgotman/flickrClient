@@ -19,7 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
-    private static final String TAG = PhotoAdapter.class.getSimpleName();
+    public static final int IMAGE_WIDTH = 250;
+    public static final int IMAGE_HEIGHT = 250;
     private List<Photo> mPhotoList;
     private Context mContext;
 
@@ -43,13 +44,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         mPhotoList = photoList;
     }
 
-
     @Override
     public PhotoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                       int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_photo_data_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
-
         return vh;
     }
 
@@ -60,11 +59,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         if (imgUrl != null) {
             Picasso.with(mContext)
                     .load(imgUrl)
-                    .resize(250, 250)
+                    .resize(IMAGE_WIDTH, IMAGE_HEIGHT)
                     .centerCrop()
                     .into(holder.mPhoto);
         }
-
     }
 
     @Override
@@ -74,5 +72,4 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         }
         return mPhotoList.size();
     }
-
 }
