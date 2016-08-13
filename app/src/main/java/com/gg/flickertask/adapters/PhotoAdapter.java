@@ -23,7 +23,17 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     public static final int IMAGE_HEIGHT = 250;
     private List<Photo> mPhotoList;
     private Context mContext;
+    private final OnItemClickListener mItemClickListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(Photo item);
+    }
+
+    public PhotoAdapter(Context context, List<Photo> photoList, OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        mContext = context;
+        setPhotoList(photoList);
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTitle;
         public ImageView mPhoto;
@@ -35,10 +45,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         }
     }
 
-    public PhotoAdapter(Context context, List<Photo> photoList) {
-        mContext = context;
-        setPhotoList(photoList);
-    }
+
 
     public void setPhotoList(List<Photo> photoList) {
         mPhotoList = photoList;
@@ -53,7 +60,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mTitle.setText(mPhotoList.get(position).title);
         final String imgUrl = mPhotoList.get(position).url_s;
         if (imgUrl != null) {
@@ -63,6 +70,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                     .centerCrop()
                     .into(holder.mPhoto);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                mItemClickListener.onItemClick(mPhotoList.get(position));
+            }
+        });
     }
 
     @Override

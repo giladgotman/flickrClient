@@ -1,5 +1,6 @@
 package com.gg.flickertask.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 
 import com.gg.flickertask.R;
 import com.gg.flickertask.adapters.PhotoAdapter;
+import com.gg.flickertask.model.Photo;
 import com.gg.flickertask.model.PhotoSearchResult;
 import com.gg.flickertask.network.NetworkHelper;
 
@@ -26,6 +28,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String PHOTO_OBJECT_KEY = "PhotoObject";
     private NetworkHelper mNetworkHelper;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -64,8 +67,17 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPhotoAdapter = new PhotoAdapter(MainActivity.this, null);
+        mPhotoAdapter = new PhotoAdapter(MainActivity.this, null, new PhotoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Photo item) {
+                Intent startFullScreenPhotoIntent = new Intent(MainActivity.this, PhotoActivity.class);
+                startFullScreenPhotoIntent.putExtra(PHOTO_OBJECT_KEY, item);
+                startActivity(startFullScreenPhotoIntent);
+
+            }
+        });
         mRecyclerView.setAdapter(mPhotoAdapter);
+
     }
 
     private void setupNetwork() {
