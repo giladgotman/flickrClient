@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Helper module performing the REST calls to flickr api.
  * Using Retrofit
  */
-public final class NetworkHelper {
+public class NetworkHelper {
     private static final String TAG = NetworkHelper.class.getSimpleName();
     public static final String BASE_URL = "https://api.flickr.com";
     public static final String API_KEY = "07985c2a8548dc02ca09c5161ae25512";

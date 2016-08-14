@@ -36,6 +36,20 @@ public class Photo implements Serializable {
     public Photo() {
     }
 
+    public Photo(String mId, String mTitle, String mUrlSmallSize,
+                 String mUrlLargeSize, String mUrlOrigianlSize,
+                 String mOwenerName, String mDateTaken, String mViews) {
+        this.mId = mId;
+        this.mTitle = mTitle;
+        this.mUrlSmallSize = mUrlSmallSize;
+        this.mUrlLargeSize = mUrlLargeSize;
+        this.mUrlOrigianlSize = mUrlOrigianlSize;
+        this.mOwenerName = mOwenerName;
+        this.mDateTaken = mDateTaken;
+        this.mViews = mViews;
+    }
+
+
     @Override
     public String toString() {
         return "Photo{" +
@@ -80,5 +94,13 @@ public class Photo implements Serializable {
 
     public String getViews() {
         return mViews;
+    }
+
+    public void setId(String mId) {
+        this.mId = mId;
+    }
+
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 }
