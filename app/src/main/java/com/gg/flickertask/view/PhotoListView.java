@@ -12,7 +12,7 @@ public interface PhotoListView {
 
     void addPhotos(Photos photos);
 
-    void onNetworkError(String errorText);
+    void setTextStatus(String errorText);
 
     void setProgress(boolean inProgress);
 

@@ -43,6 +43,7 @@ public class PhotoListPresenterImpl implements PhotoListPresenter{
     //TODO duplicate code, make a function or something
     @Override
     public void getNextSearchPage(String text, int page) {
+        mPhotoListView.setTextStatus("Getting more results...");
         sendSearchPhotosRequest(text, page);
     }
 
@@ -66,7 +67,7 @@ public class PhotoListPresenterImpl implements PhotoListPresenter{
             public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
                 Log.d(TAG, "getNextSearchPage:onFailure: " + t.toString());
                 // TODO: set string in strings
-                mPhotoListView.onNetworkError("Network Error");
+                mPhotoListView.setTextStatus("Network Error");
             }
         }, page);
     }

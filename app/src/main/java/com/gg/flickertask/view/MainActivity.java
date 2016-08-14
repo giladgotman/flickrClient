@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gg.flickertask.R;
 import com.gg.flickertask.adapters.PhotoAdapter;
@@ -19,6 +20,10 @@ import com.gg.flickertask.model.Photo;
 import com.gg.flickertask.model.Photos;
 import com.gg.flickertask.presenter.PhotoListPresenter;
 import com.gg.flickertask.presenter.PhotoListPresenterImpl;
+import com.gg.flickertask.util.DeviceServices;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Gilad on 8/13/2016.
@@ -38,21 +43,29 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
     private EditText mSearchEditText;
     private PhotoListPresenter mPhotoListPresenter;
     private String mSearchText;
+    @BindView (R.id.status_txv)
+    TextView mStatusTxv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(MainActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSearchEditText = (EditText) findViewById(R.id.serachEditText);
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text != null && !text.equals("")) {
-                    mPhotoListPresenter.userSearchPhotos(text.toString());
+                if (DeviceServices.isNetworkConnected(MainActivity.this)) {
+                    if (text != null && !text.equals("")) {
+                        setTextStatus("Fetching data...");
+                        mPhotoListPresenter.userSearchPhotos(text.toString());
+                    } else {
+                        mPhotoAdapter.setPhotos(null);
+                    }
                 } else {
-                    mPhotoAdapter.setPhotos(null);
+                    setTextStatus(getString(R.string.no_connection));
                 }
             }
             @Override
@@ -80,7 +93,10 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
 
             @Override
             public void getNextSearchPage(int page) {
-                mPhotoListPresenter.getNextSearchPage(mSearchText, page);
+                String text = mSearchEditText.getText().toString();
+                if (!text.equals("")) {
+                    mPhotoListPresenter.getNextSearchPage(text, page);
+                }
             }
         });
         mRecyclerView.setAdapter(mPhotoAdapter);
@@ -105,18 +121,21 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
     @Override
     public void setPhotos(Photos photos) {
         Log.d(TAG, "setPhotos: " + photos);
+        setTextStatus("");
         mPhotoAdapter.setPhotos(photos);
     }
 
     @Override
     public void addPhotos(Photos photos) {
         Log.d(TAG, "addPhotos: " + photos);
+        setTextStatus("");
         mPhotoAdapter.addPhotos(photos);
     }
 
     @Override
-    public void onNetworkError(String errorText) {
-        Log.w(TAG, "onNetworkError: " + errorText);
+    public void setTextStatus(String status) {
+        Log.w(TAG, "setTextStatus: " + status);
+        mStatusTxv.setText(status);
         mPhotoAdapter.setIsRequesting(false);
 
     }
