@@ -20,6 +20,8 @@ public class Photo implements Serializable {
     private String mUrlSmallSize;
     @SerializedName("url_c")
     private String mUrlLargeSize;
+    @SerializedName("url_o")
+    private String mUrlOrigianlSize;
     @SerializedName("ownername")
     private String mOwenerName;
     @SerializedName("datetaken")
@@ -60,8 +62,12 @@ public class Photo implements Serializable {
         return mUrlSmallSize;
     }
 
-    public String getUrlOriginalSize() {
+    public String getUrlLargeSize() {
         return mUrlLargeSize;
+    }
+
+    public String getUrlOriginalSize() {
+        return mUrlOrigianlSize;
     }
 
     public String getOwenerName() {

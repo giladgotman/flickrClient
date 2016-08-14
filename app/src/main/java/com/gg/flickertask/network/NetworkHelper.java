@@ -54,7 +54,7 @@ public final class NetworkHelper {
                 HttpUrl url = request.url().newBuilder().
                         addQueryParameter("method", "flickr.photos.search").
                         addQueryParameter("sort", "interestingness-desc").
-                        addQueryParameter("extras", "url_t,url_c,date_taken,owner_name,views").
+                        addQueryParameter("extras", "url_t,url_o,url_c,date_taken,owner_name,views").
                         addQueryParameter("api_key", API_KEY).
                         addQueryParameter("format", "json").
                         addQueryParameter("nojsoncallback", "1").
