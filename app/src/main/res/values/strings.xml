@@ -2,4 +2,6 @@
     <string name="app_name">FlickrClient</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_photo">PhotoActivity</string>
+    <string name="owner_name">Owner name :</string>
+    <string name="date_taken">Date taken :</string>
 </resources>

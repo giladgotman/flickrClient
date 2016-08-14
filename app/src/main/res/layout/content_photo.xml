@@ -13,10 +13,47 @@
     tools:context="com.gg.flickertask.ui.PhotoActivity"
     tools:showIn="@layout/activity_photo">
 
+
+    <TextView
+        android:id="@+id/owener_name_lbl_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginRight="10dp"
+        android:text="@string/owner_name"/>
+
+    <TextView
+        android:id="@+id/owener_name_value_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/owener_name_lbl_txv"
+        android:layout_alignBaseline="@id/owener_name_lbl_txv"
+        android:text="name name"/>
+
+    <TextView
+        android:id="@+id/date_lbl_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_below="@id/owener_name_lbl_txv"
+        android:layout_marginTop="10dp"
+        android:text="@string/date_taken"/>
+
+    <TextView
+        android:id="@+id/date_value_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/date_lbl_txv"
+        android:layout_alignBaseline="@id/date_lbl_txv"
+        android:layout_alignLeft="@id/owener_name_value_txv"
+        android:text="17/5/2015"/>
+
     <ImageView
         android:id="@+id/fullscreenPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/date_lbl_txv"
         android:src="@drawable/default_photo_image"/>
 
 </RelativeLayout>
