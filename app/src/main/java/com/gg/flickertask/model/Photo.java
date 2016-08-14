@@ -9,9 +9,9 @@ import java.io.Serializable;
  */
 
 /**
- * Photo object holding information and urls of the photo
+ * Photo object holding information and urls of the photo.
  */
-public class Photo implements Serializable{
+public class Photo implements Serializable {
     @SerializedName("id")
     private String mId;
     @SerializedName("title")
@@ -28,7 +28,7 @@ public class Photo implements Serializable{
     private String mViews;
 
     /**
-     * No args constructor for use in serialization
+     * No args constructor for use in serialization.
      *
      */
     public Photo() {

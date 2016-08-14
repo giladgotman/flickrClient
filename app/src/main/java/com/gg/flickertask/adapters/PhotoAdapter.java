@@ -41,7 +41,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     /**
-     * set new dataset of photos and paging information
+     * set new dataset of photos and paging information.
      * @param photos the new dataset
      */
     public void setPhotos(Photos photos) {
@@ -52,14 +52,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     /**
-     * add a new list of photos to the existing dataset
+     * add a new list of photos to the existing dataset.
      * if the current dataset is null, it will replace it
      * @param photos photos objects containing the photo list to add
      */
     public void addPhotos(Photos photos) {
         if (mPhotos != null) {
-            if (photos != null && photos.getPhotoList() != null &&
-                    mPhotos.getPhotoList() != null) {
+            if (photos != null
+                    && photos.getPhotoList() != null
+                    && mPhotos.getPhotoList() != null) {
                 mPhotos.getPhotoList().addAll(photos.getPhotoList());
             }
         } else {
@@ -145,7 +146,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     /**
-     * set is requesting flag
+     * set is requesting flag.
      * set to false when there is no request pending
      * used to not sending multiple same requests
      * @param isRequesting
