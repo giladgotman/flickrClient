@@ -23,10 +23,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by Gilad on 8/13/2016.
+ */
+
+/**
+ * Main screen, shows photo search result in a list
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String PHOTO_OBJECT_KEY = "PhotoObject";
+    public static final int FIRST_PAGE = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
-        }, 1);
+        }, FIRST_PAGE);
     }
 
 
