@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPhotoAdapter = new PhotoAdapter(MainActivity.this, null, new PhotoAdapter.OnItemClickListener() {
+        mPhotoAdapter = new PhotoAdapter(null, new PhotoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Photo item) {
                 Intent startFullScreenPhotoIntent = new Intent(MainActivity.this, PhotoActivity.class);

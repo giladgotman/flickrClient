@@ -4,7 +4,6 @@ package com.gg.flickertask.adapters;
  * Created by Gilad on 8/13/2016.
  */
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +31,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     private static final String TAG = PhotoAdapter.class.getSimpleName();
     public static final int ITEMS_BEFORE_NEXT_PAGE_REQUEST = 10;
     private Photos mPhotos;
-    private Context mContext;
     private int mCurrentPage;
     private final OnItemClickListener mItemClickListener;
     private boolean mRequesting;
@@ -41,9 +39,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         void onItemClick(Photo item);
     }
 
-    public PhotoAdapter(Context context, Photos photos, OnItemClickListener itemClickListener) {
+    public PhotoAdapter(Photos photos, OnItemClickListener itemClickListener) {
         mItemClickListener = itemClickListener;
-        mContext = context;
         setPhotos(photos);
     }
 
@@ -91,7 +88,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             holder.mTitle.setText(getPhotoList().get(position).title);
             final String imgUrl = getPhotoList().get(position).url_s;
             if (imgUrl != null) {
-                Picasso.with(mContext)
+                Picasso.with(holder.itemView.getContext())
                         .load(imgUrl)
                         .resize(IMAGE_WIDTH, IMAGE_HEIGHT)
                         .centerCrop()
