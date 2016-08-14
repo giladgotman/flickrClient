@@ -36,15 +36,14 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String PHOTO_OBJECT_KEY = "PhotoObject";
-    public static final int FIRST_PAGE = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
-    private EditText mSearchEditText;
     private PhotoListPresenter mPhotoListPresenter;
-    private String mSearchText;
-    @BindView (R.id.status_txv)
+    @BindView(R.id.status_txv)
     TextView mStatusTxv;
+    @BindView(R.id.serachEditText)
+    EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +52,12 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
         ButterKnife.bind(MainActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mSearchEditText = (EditText) findViewById(R.id.serachEditText);
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 if (DeviceServices.isNetworkConnected(MainActivity.this)) {
                     if (text != null && !text.equals("")) {
-                        setTextStatus("Fetching data...");
+                        setTextStatus(getString(R.string.fetching_data));
                         mPhotoListPresenter.userSearchPhotos(text.toString());
                     } else {
                         mPhotoAdapter.setPhotos(null);

@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 public class PhotoActivity extends AppCompatActivity {
     
     private static final String TAG = PhotoActivity.class.getSimpleName();
+    @BindView(R.id.fullscreenPhoto)
     ImageView mFullScreenPhoto;
     @BindView(R.id.owener_name_value_txv)
     TextView mOwnerNameTxv;
@@ -34,7 +35,6 @@ public class PhotoActivity extends AppCompatActivity {
         ButterKnife.setDebug(true);
         ButterKnife.bind(PhotoActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mFullScreenPhoto = (ImageView) findViewById(R.id.fullscreenPhoto);
         Intent photoIntent = getIntent();
         if (photoIntent != null) {
             Photo photo = (Photo) photoIntent.getSerializableExtra(MainActivity.PHOTO_OBJECT_KEY);
