@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  */
 
 /**
- * Main screen, shows photo search result in a list
+ * Main screen, shows photo search result in a list.
  */
 public class MainActivity extends AppCompatActivity implements PhotoListView {
 
@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
         setSupportActionBar(toolbar);
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
+            public void onTextChanged(final CharSequence text, final int start,
+                                      final int before, final int count) {
                 if (DeviceServices.isNetworkConnected(MainActivity.this)) {
                     if (text != null && !text.equals("")) {
                         setTextStatus(getString(R.string.fetching_data));
@@ -67,10 +68,11 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
                 }
             }
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(final CharSequence s, final int start,
+                                          final int count, final int after) {
             }
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(final Editable s) {
             }
         });
         setRecyclerView();
