@@ -2,15 +2,15 @@ package com.gg.flickertask.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.gg.flickertask.R;
@@ -46,23 +46,25 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSearchEditText = (EditText) findViewById(R.id.serachEditText);
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                if (text != null && !text.equals("")) {
+                    mPhotoListPresenter.userSearchPhotos(text.toString());
+                } else {
+                    mPhotoAdapter.setPhotos(null);
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         setRecyclerView();
         mPhotoListPresenter = new PhotoListPresenterImpl(MainActivity.this);
         mPhotoListPresenter.onCreate();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSearchText = mSearchEditText.getText().toString();
-                    if (mSearchText != null && !mSearchText.equals("")) {
-                        mPhotoListPresenter.userSearchPhotos(mSearchText);
-                    } else {
-                        mSearchEditText.setError("Please enter text");
-                    }
-                }
-            });
-        }
     }
 
     private void setRecyclerView() {
@@ -73,8 +75,9 @@ public class MainActivity extends AppCompatActivity implements PhotoListView {
         mPhotoAdapter = new PhotoAdapter(null, new PhotoAdapter.PhotoAdapterListener() {
             @Override
             public void onItemClick(Photo item) {
-               mPhotoListPresenter.userSelectedPhoto(item);
+                mPhotoListPresenter.userSelectedPhoto(item);
             }
+
             @Override
             public void getNextSearchPage(int page) {
                 mPhotoListPresenter.getNextSearchPage(mSearchText, page);
