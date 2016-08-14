@@ -29,4 +29,11 @@ public class PhotoSearchResult {
     public PhotoSearchResult(Photos photos) {
         this.mPhotos = photos;
     }
+
+    @Override
+    public String toString() {
+        return "PhotoSearchResult{" +
+                "mPhotos=" + mPhotos +
+                '}';
+    }
 }

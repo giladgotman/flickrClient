@@ -14,14 +14,16 @@ import java.io.Serializable;
 public class Photo implements Serializable{
     @SerializedName("id")
     private String mId;
-    @SerializedName("owner")
-    private String mOwner;
     @SerializedName("title")
     private String mTitle;
-    @SerializedName("url_s")
+    @SerializedName("url_t")
     private String mUrlSmallSize;
-    @SerializedName("url_o")
-    private String mUrlOriginalSize;
+    @SerializedName("url_c")
+    private String mUrlLargeSize;
+    @SerializedName("ownername")
+    private String mOwenerName;
+    @SerializedName("datetaken")
+    private String mDateTaken;
     /**
      * No args constructor for use in serialization
      *
@@ -29,22 +31,15 @@ public class Photo implements Serializable{
     public Photo() {
     }
 
-    public Photo(String mId, String mOwner, String mTitle, String mUrlSmallSize, String mUrlOriginalSize) {
-        this.mId = mId;
-        this.mOwner = mOwner;
-        this.mTitle = mTitle;
-        this.mUrlSmallSize = mUrlSmallSize;
-        this.mUrlOriginalSize = mUrlOriginalSize;
-    }
-
     @Override
     public String toString() {
         return "Photo{" +
                 "mId='" + mId + '\'' +
-                ", mOwner='" + mOwner + '\'' +
                 ", mTitle='" + mTitle + '\'' +
                 ", mUrlSmallSize='" + mUrlSmallSize + '\'' +
-                ", mUrlOriginalSize='" + mUrlOriginalSize + '\'' +
+                ", mUrlLargeSize='" + mUrlLargeSize + '\'' +
+                ", mOwenerName='" + mOwenerName + '\'' +
+                ", mDateTaken='" + mDateTaken + '\'' +
                 '}';
     }
 
@@ -52,9 +47,6 @@ public class Photo implements Serializable{
         return mId;
     }
 
-    public String getOwner() {
-        return mOwner;
-    }
 
     public String getTitle() {
         return mTitle;
@@ -65,6 +57,14 @@ public class Photo implements Serializable{
     }
 
     public String getUrlOriginalSize() {
-        return mUrlOriginalSize;
+        return mUrlLargeSize;
+    }
+
+    public String getOwenerName() {
+        return mOwenerName;
+    }
+
+    public String getDateTaken() {
+        return mDateTaken;
     }
 }

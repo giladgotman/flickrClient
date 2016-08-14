@@ -94,9 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 if (response != null) {
                     Log.d(TAG, "sendGetPhotoSearchResult:onResponse: " + response.toString());
                     PhotoSearchResult res = response.body();
-                    Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
-                    mPhotoAdapter.setPhotos(res.mPhotos);
-                    mPhotoAdapter.notifyDataSetChanged();
+                    if (res != null) {
+                        Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
+                        mPhotoAdapter.setPhotos(res.mPhotos);
+                        mPhotoAdapter.notifyDataSetChanged();
+                    }
+
                 }
             }
 

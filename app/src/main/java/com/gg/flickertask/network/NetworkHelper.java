@@ -6,6 +6,13 @@ import com.gg.flickertask.model.PhotoSearchResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -20,38 +27,63 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Using Retrofit
  */
 public class NetworkHelper {
-    public static final String BASE_URL = "https://api.flickr.com/services/rest/";
     private static final String TAG = NetworkHelper.class.getSimpleName();
+    public static final String BASE_URL = "https://api.flickr.com";
+    public static final String API_KEY = "07985c2a8548dc02ca09c5161ae25512";
 
     private Retrofit mRetrofitApi;
     private static NetworkHelper mInstance;
+
     private NetworkHelper() {
 
     }
+
     public synchronized static NetworkHelper getInstance() {
         if (mInstance == null) {
             mInstance = new NetworkHelper();
         }
         return mInstance;
     }
-
     public void setup() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
+        Interceptor clientInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                HttpUrl url = request.url().newBuilder().
+                        addQueryParameter("method","flickr.photos.search").
+                        addQueryParameter("extras", "url_t,url_c,date_taken,owner_name").
+                        addQueryParameter("api_key", API_KEY).
+                        addQueryParameter("format","json").
+                        addQueryParameter("nojsoncallback","1").
+                        build();
+                request = request.newBuilder().url(url).build();
+                return chain.proceed(request);
+            }
+        };
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(clientInterceptor)
+                .build();
+
 
         mRetrofitApi = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
     }
 
     /**
      * execute a REST call performing a search for photos in flickr
+     *
      * @param searchText filter text
-     * @param callback callback for getting result
-     * @param page the desired page (Paging)
+     * @param callback   callback for getting result
+     * @param page       the desired page (Paging)
      */
+
     public void getPhotoSearchResult(String searchText, Callback<PhotoSearchResult> callback, int page) {
         if (searchText == null) {
             throw new IllegalArgumentException("search text must not be null");
@@ -61,7 +93,7 @@ public class NetworkHelper {
         }
         Log.d(TAG, "getPhotoSearchResult: text : " + searchText + ", page :" + page);
         SearchPhotoApi searchPhotoApi = mRetrofitApi.create(SearchPhotoApi.class);
-        Call<PhotoSearchResult> call = searchPhotoApi.getPhotoSearchResult(searchText,page);
+        Call<PhotoSearchResult> call = searchPhotoApi.getPhotoSearchResult(searchText, page);
         call.enqueue(callback);
     }
 
