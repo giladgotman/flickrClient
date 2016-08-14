@@ -19,8 +19,6 @@ import com.gg.flickertask.model.Photo;
 import com.gg.flickertask.model.PhotoSearchResult;
 import com.gg.flickertask.network.NetworkHelper;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String PHOTO_OBJECT_KEY = "PhotoObject";
-    private NetworkHelper mNetworkHelper;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         mSearchEditText = (EditText) findViewById(R.id.serachEditText);
         setRecyclerView();
 
-        mNetworkHelper = new NetworkHelper();
         setupNetwork();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
@@ -81,22 +77,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNetwork() {
-        if (mNetworkHelper != null) {
-            mNetworkHelper.setup();
-        }
+            NetworkHelper.getInstance().setup();
     }
 
     private void sendGetPhotoSearchResult(String text) {
-        if (mNetworkHelper != null) {
-            mNetworkHelper.getPhotoSearchResult(text, new Callback<PhotoSearchResult>() {
+            NetworkHelper.getInstance().getPhotoSearchResult(text, new Callback<PhotoSearchResult>() {
                 @Override
                 public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
                     if (response != null) {
                         Log.d(TAG, "sendGetPhotoSearchResult:onResponse: " + response.toString());
                         PhotoSearchResult res = response.body();
                         Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
-                        List photoList = res.photos.getPhotoList();
-                        mPhotoAdapter.setPhotoList(photoList);
+                        mPhotoAdapter.setPhotos(res.photos);
                         mPhotoAdapter.notifyDataSetChanged();
                     }
                 }
@@ -105,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
                     Log.d(TAG, "onFailure: " + t.toString());
                 }
-            });
-        }
+            },1);
     }
 
 

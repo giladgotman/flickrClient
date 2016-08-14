@@ -11,6 +11,8 @@ import java.util.List;
 public class Photos {
 
     public String total;
+    public String pages;
+    public String perpage;
     @SerializedName("photo")
     public List<Photo> mPhotoList = new ArrayList<Photo>();
     /**
@@ -44,5 +46,28 @@ public class Photos {
 
     public List<Photo> getPhotoList() {
         return mPhotoList;
+    }
+
+    public String getPages() {
+        return pages;
+    }
+
+    public String getPerpage() {
+        return perpage;
+    }
+    public int getPerpageInt() {
+        int pageInt = 1;
+        if (perpage != null) {
+            pageInt = Integer.parseInt(perpage);
+        }
+        return pageInt;
+    }
+
+    public int getPageseInt() {
+        int pagesInt = 1;
+        if (pages != null) {
+            pagesInt = Integer.parseInt(pages);
+        }
+        return pagesInt;
     }
 }

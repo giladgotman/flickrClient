@@ -1,5 +1,7 @@
 package com.gg.flickertask.network;
 
+import android.util.Log;
+
 import com.gg.flickertask.model.PhotoSearchResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,6 +20,19 @@ public class NetworkHelper {
 
     private Retrofit mApiService;
 
+    private static NetworkHelper mInstance;
+
+    private NetworkHelper() {
+
+    }
+    public synchronized static NetworkHelper getInstance() {
+        if (mInstance == null) {
+            mInstance = new NetworkHelper();
+        }
+        return mInstance;
+    }
+
+
     public void setup() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -29,15 +44,16 @@ public class NetworkHelper {
                 .build();
     }
 
-    public void getPhotoSearchResult(String searchText, Callback<PhotoSearchResult> callback) {
+    public void getPhotoSearchResult(String searchText, Callback<PhotoSearchResult> callback, int page) {
         if (searchText == null) {
             throw new IllegalArgumentException("search text must not be null");
         }
         if (callback == null) {
             throw new IllegalArgumentException("callback must not be null");
         }
+        Log.d(TAG, "getPhotoSearchResult: text : " + searchText + ", page :" + page);
         SearchPhotoApi searchPhotoApi = mApiService.create(SearchPhotoApi.class);
-        Call<PhotoSearchResult> call = searchPhotoApi.getPhotoSearchResult(searchText);
+        Call<PhotoSearchResult> call = searchPhotoApi.getPhotoSearchResult(searchText,page);
         call.enqueue(callback);
     }
 

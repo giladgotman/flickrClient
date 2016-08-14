@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlickerTask</string>
+    <string name="app_name">FlickrClient</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_photo">PhotoActivity</string>
 </resources>
