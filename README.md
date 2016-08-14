@@ -1,6 +1,5 @@
-# FlickrClient
+FlickrClient
 ========
-
 Awesome Flickr client which gives you the ability to search photos from Flickr
 
 3rd party libs
