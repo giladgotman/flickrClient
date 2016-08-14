@@ -20,31 +20,26 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
-    public static final int IMAGE_WIDTH = 250;
-    public static final int IMAGE_HEIGHT = 250;
+    private static final int IMAGE_WIDTH = 250;
+    private static final int IMAGE_HEIGHT = 250;
     private static final String TAG = PhotoAdapter.class.getSimpleName();
-    public static final int ITEMS_BEFORE_NEXT_PAGE_REQUEST = 10;
-    public static final int FIRST_PAGE = 1;
+    private static final int ITEMS_BEFORE_NEXT_PAGE_REQUEST = 10;
+    private static final int FIRST_PAGE = 1;
     private Photos mPhotos;
     private int mCurrentPage;
     private final PhotoAdapterListener mPhotoAdapterListener;
     private boolean mRequesting;
 
-    public interface PhotoAdapterListener {
-        void onItemClick(Photo item);
-        void getNextSearchPage(int page);
-    }
-
-    public PhotoAdapter(Photos photos, PhotoAdapterListener itemClickListener) {
+    public PhotoAdapter(Photos photos, final PhotoAdapterListener itemClickListener) {
         mPhotoAdapterListener = itemClickListener;
         setPhotos(photos);
     }
 
     /**
-     * set new dataset of photos and paging information
+     * set new dataset of photos and paging information.
      * @param photos the new dataset
      */
-    public void setPhotos(Photos photos) {
+    public final void setPhotos(final Photos photos) {
         mPhotos = photos;
         mCurrentPage = FIRST_PAGE;
         notifyDataSetChanged();
@@ -52,14 +47,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     /**
-     * add a new list of photos to the existing dataset
+     * add a new list of photos to the existing dataset.
      * if the current dataset is null, it will replace it
      * @param photos photos objects containing the photo list to add
      */
-    public void addPhotos(Photos photos) {
+    public final void addPhotos(final Photos photos) {
         if (mPhotos != null) {
-            if (photos != null && photos.getPhotoList() != null &&
-                    mPhotos.getPhotoList() != null) {
+            if (photos != null
+                    && photos.getPhotoList() != null
+                    && mPhotos.getPhotoList() != null) {
                 mPhotos.getPhotoList().addAll(photos.getPhotoList());
             }
         } else {
@@ -74,7 +70,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         public TextView mViews;
         public ImageView mPhoto;
 
-        public ViewHolder(View v) {
+        public ViewHolder(final View v) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.firstLine);
             mViews = (TextView) v.findViewById(R.id.secondLine);
@@ -83,15 +79,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     @Override
-    public PhotoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+    public PhotoAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                      final int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_photo_data_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (getPhotoList() != null) {
             mCurrentPage = (position / mPhotos.getPerpageInt()) + 1;
             holder.mTitle.setText(getPhotoList().get(position).getTitle());
@@ -108,7 +104,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     mPhotoAdapterListener.onItemClick(getPhotoList().get(position));
                 }
             });
@@ -130,7 +126,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     @Override
-    public int getItemCount() {
+    public final int getItemCount() {
         if (mPhotos == null || mPhotos.getPhotoList() == null) {
             return 0;
         }
@@ -145,13 +141,18 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     /**
-     * set is requesting flag
+     * set is requesting flag.
      * set to false when there is no request pending
      * used to not sending multiple same requests
      * @param isRequesting
      */
-    public void setIsRequesting(boolean isRequesting) {
+
+    public final void setIsRequesting(final boolean isRequesting) {
         mRequesting = isRequesting;
     }
 
+    public interface PhotoAdapterListener {
+        void onItemClick(Photo item);
+        void getNextSearchPage(int page);
+    }
 }

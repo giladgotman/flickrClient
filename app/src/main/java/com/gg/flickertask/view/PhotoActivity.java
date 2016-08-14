@@ -39,7 +39,13 @@ public class PhotoActivity extends AppCompatActivity {
         if (photoIntent != null) {
             Photo photo = (Photo) photoIntent.getSerializableExtra(MainActivity.PHOTO_OBJECT_KEY);
             toolbar.setTitle(photo.getTitle());
-            String photoUrl = photo.getUrlOriginalSize();
+            String photoUrl = photo.getUrlLargeSize();
+            if (photoUrl == null) {
+                photoUrl = photo.getUrlOriginalSize();
+            }
+            if (photoUrl == null) {
+                photoUrl = photo.getUrlSmallSize();
+            }
             if (photoUrl != null) {
                 Picasso.with(PhotoActivity.this)
                         .load(photoUrl)
@@ -47,6 +53,8 @@ public class PhotoActivity extends AppCompatActivity {
                         .error(R.drawable.default_photo_image)
                         .into(mFullScreenPhoto);
 
+            } else {
+                Log.e(TAG, "onCreate: url is null");
             }
             mOwnerNameTxv.setText(photo.getOwenerName());
             mDateTxv.setText(photo.getDateTaken());

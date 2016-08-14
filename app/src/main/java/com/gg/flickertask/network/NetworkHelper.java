@@ -23,42 +23,41 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 /**
- * Helper module performing the REST calls to flickr api
+ * Helper module performing the REST calls to flickr api.
  * Using Retrofit
  */
 public class NetworkHelper {
     private static final String TAG = NetworkHelper.class.getSimpleName();
     public static final String BASE_URL = "https://api.flickr.com";
     public static final String API_KEY = "07985c2a8548dc02ca09c5161ae25512";
-
     private Retrofit mRetrofitApi;
     private static NetworkHelper mInstance;
 
     private NetworkHelper() {
-
     }
 
-    public synchronized static NetworkHelper getInstance() {
+    public static synchronized NetworkHelper getInstance() {
         if (mInstance == null) {
             mInstance = new NetworkHelper();
         }
         return mInstance;
     }
+
     public void setup() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
         Interceptor clientInterceptor = new Interceptor() {
             @Override
-            public Response intercept(Chain chain) throws IOException {
+            public Response intercept(final Chain chain) throws IOException {
                 Request request = chain.request();
                 HttpUrl url = request.url().newBuilder().
-                        addQueryParameter("method","flickr.photos.search").
-                        addQueryParameter("sort","interestingness-desc").
-                        addQueryParameter("extras", "url_t,url_c,date_taken,owner_name,views").
+                        addQueryParameter("method", "flickr.photos.search").
+                        addQueryParameter("sort", "interestingness-desc").
+                        addQueryParameter("extras", "url_t,url_o,url_c,date_taken,owner_name,views").
                         addQueryParameter("api_key", API_KEY).
-                        addQueryParameter("format","json").
-                        addQueryParameter("nojsoncallback","1").
+                        addQueryParameter("format", "json").
+                        addQueryParameter("nojsoncallback", "1").
                         build();
                 request = request.newBuilder().url(url).build();
                 return chain.proceed(request);
@@ -78,14 +77,15 @@ public class NetworkHelper {
     }
 
     /**
-     * execute a REST call performing a search for photos in flickr
+     * execute a REST call performing a search for photos in flickr.
      *
      * @param searchText filter text
      * @param callback   callback for getting result
      * @param page       the desired page (Paging)
      */
 
-    public void getPhotoSearchResult(String searchText, Callback<PhotoSearchResult> callback, int page) {
+    public void getPhotoSearchResult(final String searchText, final Callback<PhotoSearchResult> callback,
+                                     final int page) {
         if (searchText == null) {
             throw new IllegalArgumentException("search text must not be null");
         }
@@ -97,5 +97,4 @@ public class NetworkHelper {
         Call<PhotoSearchResult> call = searchPhotoApi.getPhotoSearchResult(searchText, page);
         call.enqueue(callback);
     }
-
 }

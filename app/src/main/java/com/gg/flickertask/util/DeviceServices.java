@@ -6,11 +6,13 @@ import android.net.ConnectivityManager;
 /**
  * Created by Gilad on 8/14/2016.
  */
-public class DeviceServices {
+public final class DeviceServices {
 
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
+    private DeviceServices() {
+    }
+    public static boolean isNetworkConnected(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
 }
