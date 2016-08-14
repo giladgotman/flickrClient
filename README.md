@@ -15,9 +15,19 @@ Used to convert Json response from flickr to Java objects.
 * Picasso - A powerful image downloading and caching library for Android<br>
 Used for fetching images from url and placing the result to image views.
 
+* Mockito - Library for mocking objects for Android<br>
+
 Build
 --------
 Run ```scripts/01_build.sh``` from project folder
+
+SA
+--------
+Run ```scripts/02_check.sh``` from project folder
+
+Test
+--------
+Run ```scripts/03_tests.sh``` from project folder
 
 License
 --------
