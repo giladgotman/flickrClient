@@ -96,12 +96,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             mCurrentPage = (position / mPhotos.getPerpageInt()) + 1;
             holder.mTitle.setText(getPhotoList().get(position).getTitle());
             holder.mViews.setText("Views: " + getPhotoList().get(position).getViews());
+            holder.mPhoto.setImageResource(R.drawable.default_photo_image);
             final String imgUrl = getPhotoList().get(position).getUrlSmallSize();
             if (imgUrl != null) {
                 Picasso.with(holder.itemView.getContext())
                         .load(imgUrl)
                         .resize(IMAGE_WIDTH, IMAGE_HEIGHT)
                         .centerCrop()
+                        .placeholder(R.drawable.default_photo_image)
                         .into(holder.mPhoto);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {

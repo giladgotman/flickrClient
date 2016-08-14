@@ -43,7 +43,10 @@ public class PhotoActivity extends AppCompatActivity {
             if (photoUrl != null) {
                 Picasso.with(PhotoActivity.this)
                         .load(photoUrl)
+                        .placeholder( R.drawable.progress_animation )
+                        .error(R.drawable.default_photo_image)
                         .into(mFullScreenPhoto);
+
             }
             mOwnerNameTxv.setText(photo.getOwenerName());
             mDateTxv.setText(photo.getDateTaken());
