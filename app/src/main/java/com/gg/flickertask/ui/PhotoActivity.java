@@ -32,8 +32,8 @@ public class PhotoActivity extends AppCompatActivity {
         Intent photoIntent = getIntent();
         if (photoIntent != null) {
             Photo photo = (Photo) photoIntent.getSerializableExtra(MainActivity.PHOTO_OBJECT_KEY);
-            String photoUrl = photo.url_o;
-            Log.d(TAG, "onCreate: photo title:" + photo.title);
+            String photoUrl = photo.getUrlOriginalSize();
+            Log.d(TAG, "onCreate: photo title:" + photo.getTitle());
             if (photoUrl != null) {
                 Picasso.with(PhotoActivity.this)
                         .load(photoUrl)

@@ -8,13 +8,19 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Photos object holding list of photos and paging information
+ */
 public class Photos {
 
-    public String total;
-    public String pages;
-    public String perpage;
+    @SerializedName("total")
+    private String mTotalItems;
+    @SerializedName("pages")
+    private String mPages;
+    @SerializedName("perpage")
+    private String mItemsPerPage;
     @SerializedName("photo")
-    public List<Photo> mPhotoList = new ArrayList<Photo>();
+    private List<Photo> mPhotoList = new ArrayList<Photo>();
     /**
      * No args constructor for use in serialization
      *
@@ -22,26 +28,8 @@ public class Photos {
     public Photos() {
     }
 
-    /**
-     *
-     * @param total
-     * @param photoList
-     */
-    public Photos(String total, List<Photo> photoList) {
-        this.total = total;
-        this.mPhotoList = photoList;
-    }
-
-    @Override
-    public String toString() {
-        return "Photos{" +
-                "total='" + total + '\'' +
-                ", mPhotoList=" + mPhotoList +
-                '}';
-    }
-
-    public String getTotal() {
-        return total;
+    public String getTotalItems() {
+        return mTotalItems;
     }
 
     public List<Photo> getPhotoList() {
@@ -49,25 +37,36 @@ public class Photos {
     }
 
     public String getPages() {
-        return pages;
+        return mPages;
     }
 
-    public String getPerpage() {
-        return perpage;
+    public String getItemsPerPage() {
+        return mItemsPerPage;
     }
     public int getPerpageInt() {
         int pageInt = 1;
-        if (perpage != null) {
-            pageInt = Integer.parseInt(perpage);
+        if (mItemsPerPage != null) {
+            pageInt = Integer.parseInt(mItemsPerPage);
         }
         return pageInt;
     }
 
     public int getPageseInt() {
         int pagesInt = 1;
-        if (pages != null) {
-            pagesInt = Integer.parseInt(pages);
+        if (mPages != null) {
+            pagesInt = Integer.parseInt(mPages);
         }
         return pagesInt;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Photos{" +
+                "mTotalItems='" + mTotalItems + '\'' +
+                ", mPages='" + mPages + '\'' +
+                ", mItemsPerPage='" + mItemsPerPage + '\'' +
+                ", mPhotoList=" + mPhotoList +
+                '}';
     }
 }

@@ -30,6 +30,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     public static final int IMAGE_HEIGHT = 250;
     private static final String TAG = PhotoAdapter.class.getSimpleName();
     public static final int ITEMS_BEFORE_NEXT_PAGE_REQUEST = 10;
+    public static final int FIRST_PAGE = 1;
     private Photos mPhotos;
     private int mCurrentPage;
     private final OnItemClickListener mItemClickListener;
@@ -44,12 +45,21 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         setPhotos(photos);
     }
 
+    /**
+     * set new dataset of photos and paging information
+     * @param photos the new dataset
+     */
     public void setPhotos(Photos photos) {
         mPhotos = photos;
-        mCurrentPage = 1;
+        mCurrentPage = FIRST_PAGE;
         notifyDataSetChanged();
     }
 
+    /**
+     * add a new list of photos to the existing dataset
+     * if the current dataset is null, it will replace it
+     * @param photos photos objects containing the photo list to add
+     */
     public void addPhotos(Photos photos) {
         if (mPhotos != null) {
             if (photos != null && photos.getPhotoList() != null &&
@@ -85,8 +95,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (getPhotoList() != null) {
             mCurrentPage = (position / mPhotos.getPerpageInt()) + 1;
-            holder.mTitle.setText(getPhotoList().get(position).title);
-            final String imgUrl = getPhotoList().get(position).url_s;
+            holder.mTitle.setText(getPhotoList().get(position).getTitle());
+            final String imgUrl = getPhotoList().get(position).getUrlSmallSize();
             if (imgUrl != null) {
                 Picasso.with(holder.itemView.getContext())
                         .load(imgUrl)
@@ -113,7 +123,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                             public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
                                 Log.d(TAG, "onResponse: page(" + nextPage + "), :" + response.body().toString());
                                 if (response != null) {
-                                    addPhotos(response.body().photos);
+                                    addPhotos(response.body().mPhotos);
                                 }
                                 mRequesting = false;
                             }

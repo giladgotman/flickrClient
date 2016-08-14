@@ -1,16 +1,27 @@
 package com.gg.flickertask.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
  * Created by Gilad on 8/13/2016.
  */
+
+/**
+ * Photo object holding information and urls of the photo
+ */
 public class Photo implements Serializable{
-    public String id;
-    public String owner;
-    public String title;
-    public String url_s;
-    public String url_o;
+    @SerializedName("id")
+    private String mId;
+    @SerializedName("owner")
+    private String mOwner;
+    @SerializedName("title")
+    private String mTitle;
+    @SerializedName("url_s")
+    private String mUrlSmallSize;
+    @SerializedName("url_o")
+    private String mUrlOriginalSize;
     /**
      * No args constructor for use in serialization
      *
@@ -18,29 +29,42 @@ public class Photo implements Serializable{
     public Photo() {
     }
 
-    /**
-     *
-     * @param id
-     * @param title
-     * @param url_s
-     * @param owner
-     */
-    public Photo(String id, String owner, String title, String url_s, String url_o) {
-        this.id = id;
-        this.owner = owner;
-        this.title = title;
-        this.url_s = url_s;
-        this.url_o = url_o;
+    public Photo(String mId, String mOwner, String mTitle, String mUrlSmallSize, String mUrlOriginalSize) {
+        this.mId = mId;
+        this.mOwner = mOwner;
+        this.mTitle = mTitle;
+        this.mUrlSmallSize = mUrlSmallSize;
+        this.mUrlOriginalSize = mUrlOriginalSize;
     }
 
     @Override
     public String toString() {
         return "Photo{" +
-                "id='" + id + '\'' +
-                ", owner='" + owner + '\'' +
-                ", title='" + title + '\'' +
-                ", url_s='" + url_s + '\'' +
-                ", url_o='" + url_o + '\'' +
+                "mId='" + mId + '\'' +
+                ", mOwner='" + mOwner + '\'' +
+                ", mTitle='" + mTitle + '\'' +
+                ", mUrlSmallSize='" + mUrlSmallSize + '\'' +
+                ", mUrlOriginalSize='" + mUrlOriginalSize + '\'' +
                 '}';
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public String getOwner() {
+        return mOwner;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getUrlSmallSize() {
+        return mUrlSmallSize;
+    }
+
+    public String getUrlOriginalSize() {
+        return mUrlOriginalSize;
     }
 }

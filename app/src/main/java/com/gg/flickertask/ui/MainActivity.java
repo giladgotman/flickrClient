@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
-    EditText mSearchEditText;
+    private EditText mSearchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,31 +73,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setAdapter(mPhotoAdapter);
-
     }
 
     private void setupNetwork() {
-            NetworkHelper.getInstance().setup();
+        NetworkHelper.getInstance().setup();
     }
 
     private void sendGetPhotoSearchResult(String text) {
-            NetworkHelper.getInstance().getPhotoSearchResult(text, new Callback<PhotoSearchResult>() {
-                @Override
-                public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
-                    if (response != null) {
-                        Log.d(TAG, "sendGetPhotoSearchResult:onResponse: " + response.toString());
-                        PhotoSearchResult res = response.body();
-                        Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
-                        mPhotoAdapter.setPhotos(res.photos);
-                        mPhotoAdapter.notifyDataSetChanged();
-                    }
+        NetworkHelper.getInstance().getPhotoSearchResult(text, new Callback<PhotoSearchResult>() {
+            @Override
+            public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
+                if (response != null) {
+                    Log.d(TAG, "sendGetPhotoSearchResult:onResponse: " + response.toString());
+                    PhotoSearchResult res = response.body();
+                    Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
+                    mPhotoAdapter.setPhotos(res.mPhotos);
+                    mPhotoAdapter.notifyDataSetChanged();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
-                    Log.d(TAG, "onFailure: " + t.toString());
-                }
-            },1);
+            @Override
+            public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        }, 1);
     }
 
 
@@ -110,16 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
