@@ -71,11 +71,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTitle;
+        public TextView mViews;
         public ImageView mPhoto;
 
         public ViewHolder(View v) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.firstLine);
+            mViews = (TextView) v.findViewById(R.id.secondLine);
             mPhoto = (ImageView) v.findViewById(R.id.photo);
         }
     }
@@ -93,6 +95,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         if (getPhotoList() != null) {
             mCurrentPage = (position / mPhotos.getPerpageInt()) + 1;
             holder.mTitle.setText(getPhotoList().get(position).getTitle());
+            holder.mViews.setText("Views: " + getPhotoList().get(position).getViews());
             final String imgUrl = getPhotoList().get(position).getUrlSmallSize();
             if (imgUrl != null) {
                 Picasso.with(holder.itemView.getContext())

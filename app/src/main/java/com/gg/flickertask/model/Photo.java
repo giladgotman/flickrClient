@@ -24,6 +24,9 @@ public class Photo implements Serializable{
     private String mOwenerName;
     @SerializedName("datetaken")
     private String mDateTaken;
+    @SerializedName("views")
+    private String mViews;
+
     /**
      * No args constructor for use in serialization
      *
@@ -40,6 +43,7 @@ public class Photo implements Serializable{
                 ", mUrlLargeSize='" + mUrlLargeSize + '\'' +
                 ", mOwenerName='" + mOwenerName + '\'' +
                 ", mDateTaken='" + mDateTaken + '\'' +
+                ", mViews='" + mViews + '\'' +
                 '}';
     }
 
@@ -66,5 +70,9 @@ public class Photo implements Serializable{
 
     public String getDateTaken() {
         return mDateTaken;
+    }
+
+    public String getViews() {
+        return mViews;
     }
 }

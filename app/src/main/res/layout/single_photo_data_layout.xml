@@ -23,7 +23,7 @@
         android:layout_toRightOf="@id/photo"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:text="Description"
+        android:text="Views :"
         android:textSize="12sp" />
 
     <TextView
