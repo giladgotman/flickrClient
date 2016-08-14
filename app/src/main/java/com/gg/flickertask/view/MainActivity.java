@@ -1,4 +1,4 @@
-package com.gg.flickertask.ui;
+package com.gg.flickertask.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +16,9 @@ import android.widget.EditText;
 import com.gg.flickertask.R;
 import com.gg.flickertask.adapters.PhotoAdapter;
 import com.gg.flickertask.model.Photo;
-import com.gg.flickertask.model.PhotoSearchResult;
-import com.gg.flickertask.network.NetworkHelper;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.gg.flickertask.model.Photos;
+import com.gg.flickertask.presenter.PhotoListPresenter;
+import com.gg.flickertask.presenter.PhotoListPresenterImpl;
 
 /**
  * Created by Gilad on 8/13/2016.
@@ -30,7 +27,7 @@ import retrofit2.Response;
 /**
  * Main screen, shows photo search result in a list
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PhotoListView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String PHOTO_OBJECT_KEY = "PhotoObject";
@@ -39,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
     private EditText mSearchEditText;
+    private PhotoListPresenter mPhotoListPresenter;
+    private String mSearchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +47,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mSearchEditText = (EditText) findViewById(R.id.serachEditText);
         setRecyclerView();
-
-        setupNetwork();
+        mPhotoListPresenter = new PhotoListPresenterImpl(MainActivity.this);
+        mPhotoListPresenter.onCreate();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String searchText = mSearchEditText.getText().toString();
-                    if (searchText != null && !searchText.equals("")) {
-                        sendGetPhotoSearchResult(searchText);
+                    mSearchText = mSearchEditText.getText().toString();
+                    if (mSearchText != null && !mSearchText.equals("")) {
+                        mPhotoListPresenter.userSearchPhotos(mSearchText);
                     } else {
                         mSearchEditText.setError("Please enter text");
                     }
@@ -71,45 +70,18 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPhotoAdapter = new PhotoAdapter(null, new PhotoAdapter.OnItemClickListener() {
+        mPhotoAdapter = new PhotoAdapter(null, new PhotoAdapter.PhotoAdapterListener() {
             @Override
             public void onItemClick(Photo item) {
-                Intent startFullScreenPhotoIntent = new Intent(MainActivity.this, PhotoActivity.class);
-                startFullScreenPhotoIntent.putExtra(PHOTO_OBJECT_KEY, item);
-                startActivity(startFullScreenPhotoIntent);
-
+               mPhotoListPresenter.userSelectedPhoto(item);
+            }
+            @Override
+            public void getNextSearchPage(int page) {
+                mPhotoListPresenter.getNextSearchPage(mSearchText, page);
             }
         });
         mRecyclerView.setAdapter(mPhotoAdapter);
     }
-
-    private void setupNetwork() {
-        NetworkHelper.getInstance().setup();
-    }
-
-    private void sendGetPhotoSearchResult(String text) {
-        NetworkHelper.getInstance().getPhotoSearchResult(text, new Callback<PhotoSearchResult>() {
-            @Override
-            public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
-                if (response != null) {
-                    Log.d(TAG, "sendGetPhotoSearchResult:onResponse: " + response.toString());
-                    PhotoSearchResult res = response.body();
-                    if (res != null) {
-                        Log.d(TAG, "sendGetPhotoSearchResult:res: " + res);
-                        mPhotoAdapter.setPhotos(res.mPhotos);
-                        mPhotoAdapter.notifyDataSetChanged();
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        }, FIRST_PAGE);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,5 +97,38 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setPhotos(Photos photos) {
+        Log.d(TAG, "setPhotos: " + photos);
+        mPhotoAdapter.setPhotos(photos);
+    }
+
+    @Override
+    public void addPhotos(Photos photos) {
+        Log.d(TAG, "addPhotos: " + photos);
+        mPhotoAdapter.addPhotos(photos);
+    }
+
+    @Override
+    public void onNetworkError(String errorText) {
+        Log.w(TAG, "onNetworkError: " + errorText);
+        mPhotoAdapter.setIsRequesting(false);
+
+    }
+
+    @Override
+    public void setProgress(boolean inProgress) {
+        Log.d(TAG, "setProgress: " + inProgress);
+
+    }
+
+    @Override
+    public void startPhotoScreen(Photo photo) {
+        Log.d(TAG, "startPhotoScreen");
+        Intent startFullScreenPhotoIntent = new Intent(MainActivity.this, PhotoActivity.class);
+        startFullScreenPhotoIntent.putExtra(PHOTO_OBJECT_KEY, photo);
+        startActivity(startFullScreenPhotoIntent);
     }
 }

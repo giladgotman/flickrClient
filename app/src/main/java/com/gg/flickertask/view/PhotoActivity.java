@@ -1,4 +1,4 @@
-package com.gg.flickertask.ui;
+package com.gg.flickertask.view;
 
 import android.content.Intent;
 import android.os.Bundle;

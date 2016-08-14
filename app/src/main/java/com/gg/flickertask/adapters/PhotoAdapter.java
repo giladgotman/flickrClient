@@ -14,16 +14,10 @@ import android.widget.TextView;
 
 import com.gg.flickertask.R;
 import com.gg.flickertask.model.Photo;
-import com.gg.flickertask.model.PhotoSearchResult;
 import com.gg.flickertask.model.Photos;
-import com.gg.flickertask.network.NetworkHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
     public static final int IMAGE_WIDTH = 250;
@@ -33,15 +27,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     public static final int FIRST_PAGE = 1;
     private Photos mPhotos;
     private int mCurrentPage;
-    private final OnItemClickListener mItemClickListener;
+    private final PhotoAdapterListener mPhotoAdapterListener;
     private boolean mRequesting;
 
-    public interface OnItemClickListener {
+    public interface PhotoAdapterListener {
         void onItemClick(Photo item);
+        void getNextSearchPage(int page);
     }
 
-    public PhotoAdapter(Photos photos, OnItemClickListener itemClickListener) {
-        mItemClickListener = itemClickListener;
+    public PhotoAdapter(Photos photos, PhotoAdapterListener itemClickListener) {
+        mPhotoAdapterListener = itemClickListener;
         setPhotos(photos);
     }
 
@@ -53,6 +48,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         mPhotos = photos;
         mCurrentPage = FIRST_PAGE;
         notifyDataSetChanged();
+        mRequesting = false;
     }
 
     /**
@@ -70,6 +66,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             mPhotos = photos;
         }
         notifyDataSetChanged();
+        mRequesting = false;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,7 +104,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(getPhotoList().get(position));
+                    mPhotoAdapterListener.onItemClick(getPhotoList().get(position));
                 }
             });
 
@@ -118,21 +115,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                         Log.d(TAG, "onBindViewHolder: getting next page");
                         Log.d(TAG, "onBindViewHolder: size: " + mPhotos.getPhotoList().size());
                         mRequesting = true;
-                        NetworkHelper.getInstance().getPhotoSearchResult("food", new Callback<PhotoSearchResult>() {
-                            @Override
-                            public void onResponse(Call<PhotoSearchResult> call, Response<PhotoSearchResult> response) {
-                                Log.d(TAG, "onResponse: page(" + nextPage + "), :" + response.body().toString());
-                                if (response != null) {
-                                    addPhotos(response.body().mPhotos);
-                                }
-                                mRequesting = false;
-                            }
-
-                            @Override
-                            public void onFailure(Call<PhotoSearchResult> call, Throwable t) {
-                                mRequesting = false;
-                            }
-                        }, nextPage);
+                        mPhotoAdapterListener.getNextSearchPage(nextPage);
                     } else {
                         Log.d(TAG, "onBindViewHolder: no request : size" + (mPhotos.getPhotoList().size()));
                     }
@@ -155,4 +138,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         }
         return mPhotos.getPhotoList();
     }
+
+    /**
+     * set is requesting flag
+     * set to false when there is no request pending
+     * used to not sending multiple same requests
+     * @param isRequesting
+     */
+    public void setIsRequesting(boolean isRequesting) {
+        mRequesting = isRequesting;
+    }
+
 }

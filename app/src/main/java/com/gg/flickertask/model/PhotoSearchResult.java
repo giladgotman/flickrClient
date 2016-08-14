@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 public class PhotoSearchResult {
 
     @SerializedName("photos")
-    public Photos mPhotos;
+    private Photos mPhotos;
 
     /**
      * No args constructor for use in serialization
@@ -35,5 +35,9 @@ public class PhotoSearchResult {
         return "PhotoSearchResult{" +
                 "mPhotos=" + mPhotos +
                 '}';
+    }
+
+    public Photos getPhotos() {
+        return mPhotos;
     }
 }
